@@ -11,6 +11,9 @@ SUB = 0b10100001
 PUSH = 0b01000101
 POP = 0b01000110
 CMP = 0b10100111
+JMP = 0b01010100
+JNE = 0b01010110
+JEQ = 0b01010101
 
 
 class CPU:
@@ -28,6 +31,7 @@ class CPU:
 
         # Create stack pointer
         self.sp = self.reg[6]
+
         # Create FL pointer
         # self.fl = self.reg[4]
 
@@ -45,6 +49,21 @@ class CPU:
     def HLT_function(self):
         self.running = False
         self.pc += 1
+
+    def JMP_function(self, a):
+        self.pc = self.reg[a]
+
+    def JNE_function(self, a):
+        if self.reg[4] != 0b00000001:
+            self.pc = self.reg[a]
+        else:
+            self.pc += 2
+
+    def JEQ_function(self, a):
+        if self.reg[4] == 0b00000001:
+            self.pc = self.reg[a]
+        else:
+            self.pc += 2
 
     def load(self, file_name):
         """Load a program into memory."""
@@ -180,6 +199,12 @@ class CPU:
                 self.alu('POP', operand_a)
             elif ir == CMP:
                 self.alu('CMP', operand_a, operand_b)
+            elif ir == JMP:
+                self.JMP_function(operand_a)
+            elif ir == JNE:
+                self.JNE_function(operand_a)
+            elif ir == JEQ:
+                self.JEQ_function(operand_a)
             else:
                 self.running = False
                 print(f"I did not understand that ir: {ir}")
