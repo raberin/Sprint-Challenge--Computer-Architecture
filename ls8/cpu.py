@@ -10,6 +10,7 @@ ADD = 0b10100000
 SUB = 0b10100001
 PUSH = 0b01000101
 POP = 0b01000110
+CMP = 0b10100111
 
 
 class CPU:
@@ -26,7 +27,7 @@ class CPU:
         self.pc = 0
 
         # Create stack pointer
-        self.sp = 0
+        self.sp = self.reg[6]
 
         # Running CPU is true
         self.running = True
@@ -98,9 +99,12 @@ class CPU:
         elif op == "POP":
             # Set reg to popped value
             self.reg[reg_a] = self.ram[self.sp]
-            # Increment pc
-            self.sp += 1
             # Increment stack pointer
+            self.sp += 1
+            # Increment pc
+            self.pc += 2
+        elif op == 'CMP':
+            # Increment pc
             self.pc += 2
         else:
             raise Exception("Unsupported ALU operation")
@@ -162,6 +166,8 @@ class CPU:
                 self.alu('PUSH', operand_a)
             elif ir == POP:
                 self.alu('POP', operand_a)
+            elif ir == CMP:
+                self.alu('CMP', operand_a, operand_b)
             else:
                 self.running = False
                 print(f"I did not understand that ir: {ir}")
