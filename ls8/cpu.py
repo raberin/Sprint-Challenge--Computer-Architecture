@@ -28,6 +28,8 @@ class CPU:
 
         # Create stack pointer
         self.sp = self.reg[6]
+        # Create FL pointer
+        # self.fl = self.reg[4]
 
         # Running CPU is true
         self.running = True
@@ -104,8 +106,17 @@ class CPU:
             # Increment pc
             self.pc += 2
         elif op == 'CMP':
+            # If reg_a < reg_b
+            if self.reg[reg_a] < self.reg[reg_b]:
+                self.reg[4] = 0b00000100
+            # If reg_a > reg_b
+            elif self.reg[reg_a] > self.reg[reg_b]:
+                self.reg[4] = 0b00000010
+            # If reg_a == reg_b
+            elif self.reg[reg_a] == self.reg[reg_b]:
+                self.reg[4] = 0b00000001
             # Increment pc
-            self.pc += 2
+            self.pc += 3
         else:
             raise Exception("Unsupported ALU operation")
 
@@ -144,6 +155,7 @@ class CPU:
         while self.running:
             # Setting current to IR
             ir = self.ram_read(self.pc)
+            # self.trace()
 
             # Get PC+1
             operand_a = self.ram_read(self.pc+1)
