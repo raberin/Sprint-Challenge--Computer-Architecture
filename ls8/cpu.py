@@ -14,6 +14,12 @@ CMP = 0b10100111
 JMP = 0b01010100
 JNE = 0b01010110
 JEQ = 0b01010101
+AND = 0b10101000
+NOT = 0b01101001
+OR = 0b10101010
+XOR = 0b10101011
+SHL = 0b10101100
+SHR = 0b10101101
 
 
 class CPU:
@@ -214,6 +220,18 @@ class CPU:
                 self.alu('SUB', operand_a, operand_b)
             elif ir == MUL:
                 self.alu('MUL', operand_a, operand_b)
+            elif ir == AND:
+                self.alu('AND', operand_a, operand_b)
+            elif ir == OR:
+                self.alu('OR', operand_a, operand_b)
+            elif ir == NOT:
+                self.alu('NOT', operand_a)
+            elif ir == XOR:
+                self.alu('XOR', operand_a, operand_b)
+            elif ir == SHL:
+                self.alu('SHL', operand_a, operand_b)
+            elif ir == SHR:
+                self.alu('SHR', operand_a, operand_b)
             elif ir == PUSH:
                 self.alu('PUSH', operand_a)
             elif ir == POP:
