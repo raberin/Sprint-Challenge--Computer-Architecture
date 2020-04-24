@@ -30,7 +30,7 @@ class CPU:
         self.pc = 0
 
         # Create stack pointer
-        self.sp = self.reg[6]
+        self.sp = self.reg[7]
 
         # Create FL pointer
         # self.fl = self.reg[4]
@@ -109,6 +109,27 @@ class CPU:
             self.pc += 3
         elif op == "MUL":
             self.reg[reg_a] *= self.reg[reg_b]
+            self.pc += 3
+        # Bitwise Operators
+        elif op == "AND":
+            self.reg[reg_a] = reg_a & reg_b
+            self.pc += 3
+        elif op == "OR":
+            self.reg[reg_a] = reg_a | reg_b
+            self.pc += 3
+        elif op == "XOR":
+            self.reg[reg_a] = reg_a ^ reg_b
+            self.pc += 3
+        elif op == "NOT":
+            self.reg[reg_a] = ~reg_a
+            self.pc += 2
+        # Bitwise Shift Left => (reg_a * 2^reg_b)
+        elif op == "SHL":
+            self.reg[reg_a] = reg_a << reg_b
+            self.pc += 3
+        # Bitwise Shift Right => (reg_a / 2^reg_b)
+        elif op == "SHR":
+            self.reg[reg_a] = reg_a >> reg_b
             self.pc += 3
         elif op == "PUSH":
             # Decrement stack pointer
